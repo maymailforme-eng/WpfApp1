@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,33 +26,39 @@ namespace ListBox
             InitializeComponent();
         }
 
-        void button_Click(object sender, EventArgs e)
+        void DlgProc(object sender, EventArgs e)
         {
-            switch ((sender as Button).Content)
+            switch (sender.GetType().ToString().Split('.').Last())
             {
-                case "ADD":
-                    if (!listBox.Items.Contains(tbInput.Text))
-                    {
-                        if (tbInput.Text.Trim() == "") break;
-                        listBox.Items.Add(tbInput.Text); 
-                        tbInput.Text = "";
-                        tbInput.Focus();
-                    }
+                case nameof(TextBox):
+                    if ((e as KeyEventArgs).Key == Key.Enter) DlgProc(btnAdd, null);
                     break;
 
+                case nameof(ListBox):
+                    if ((e as KeyEventArgs).Key == Key.Delete) DlgProc(btnDel, null);
+                    break;
 
-                case "CLR":listBox.Items.Clear(); break;
-                case "DEL": 
-                    if(listBox.SelectedIndex >= 0)
-                    listBox.Items.RemoveAt(listBox.SelectedIndex); break;
+                case nameof(Button):
+                    switch ((sender as Button).Content)
+                    {
+                        case "ADD":
+                            if (!listBox.Items.Contains(tbInput.Text))
+                            {
+                                if (tbInput.Text.Trim() == "") break;
+                                listBox.Items.Add(tbInput.Text);
+                                tbInput.Text = "";
+                                tbInput.Focus();
+                            }
+                            break;
+
+
+                        case "CLR": listBox.Items.Clear(); break;
+                        case "DEL":
+                            if (listBox.SelectedIndex >= 0)
+                                listBox.Items.RemoveAt(listBox.SelectedIndex); break;
+                    }break;
             }
-        }
-
-        private void TbInput_KeyDown(object sender, KeyEventArgs e)
-        {
-
-            if (sender is TextBox && e.Key == Key.Enter) button_Click(btnAdd, null);
-            if (sender is System.Windows.Controls.ListBox && e.Key == Key.Delete) button_Click(btnDel, null);
+  
         }
     }
 }
