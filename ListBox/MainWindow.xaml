@@ -23,6 +23,7 @@
         <ListBox Name="listBox" 
                  Grid.Row="1" Grid.ColumnSpan="2"
                  Margin="5"
+                 KeyDown="TbInput_KeyDown"
                  />
 
         <Grid Grid.Row="0" Grid.Column="1">
@@ -32,7 +33,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Button Content="ADD"  Grid.Column="0" Margin="5" Click="button_Click" Name="btnAdd"/>
-            <Button Content="DEL" Grid.Column="1" Margin="5" Click="button_Click"/>
+            <Button Content="DEL" Grid.Column="1" Margin="5" Click="button_Click" Name="btnDel"/>
             <Button Content="CLR"  Grid.Column="2" Margin="5" Click="button_Click"/>
             
 
